@@ -19,6 +19,10 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api.auth import router as auth_router
 from app.api.health import router as health_router
+from app.api.transcription import router as transcription_router
+from app.api.analysis import router as analysis_router
+from app.api.videos import router as videos_router
+from app.api.clips import router as clips_router
 from app.config import settings
 
 # Configure structured logging
@@ -84,6 +88,10 @@ def create_app() -> FastAPI:
     # Routers
     application.include_router(health_router, prefix="/api")
     application.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+    application.include_router(videos_router, prefix="/api/videos", tags=["videos"])
+    application.include_router(transcription_router, prefix="/api/transcription", tags=["transcription"])
+    application.include_router(analysis_router, prefix="/api/analysis", tags=["analysis"])
+    application.include_router(clips_router, prefix="/api/clips", tags=["clips"])
 
     return application
 

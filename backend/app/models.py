@@ -53,6 +53,7 @@ class Video(Base):
     user = relationship("User", back_populates="videos")
     clips = relationship("Clip", back_populates="video", cascade="all, delete-orphan")
     jobs = relationship("Job", back_populates="video", cascade="all, delete-orphan")
+    transcripts = relationship("Transcript", back_populates="video", cascade="all, delete-orphan")
 
 
 class Clip(Base):
@@ -94,3 +95,22 @@ class Job(Base):
     )
 
     video = relationship("Video", back_populates="jobs")
+
+
+class Transcript(Base):
+    __tablename__ = "transcripts"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    video_id = Column(UUID(as_uuid=True), ForeignKey("videos.id"), nullable=False)
+    text = Column(String, nullable=False)
+    words_json = Column(JSONB, nullable=True, default=list)
+    language = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+        nullable=False,
+    )
+
+    video = relationship("Video", back_populates="transcripts")

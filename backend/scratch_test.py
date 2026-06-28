@@ -24,15 +24,18 @@ try:
 except Exception as e:
     print(f'[2] Auth Login Failed: {e}')
 
-# 3. Test Protected Route
+# 3. Test Video Listing
 if access_token:
     try:
-        req = urllib.request.Request(f'{base_url}/auth/test-token', method='POST')
+        print('[3] Testing Video Listing...')
+        req = urllib.request.Request(f'{base_url}/videos')
         req.add_header('Authorization', f'Bearer {access_token}')
         with urllib.request.urlopen(req) as response:
-            user_data = json.loads(response.read())
-            print(f'[3] Protected Route: {response.getcode()} OK -> Current User Email: {user_data.get("email")}')
+            videos = json.loads(response.read())
+            print(f'[3] Video Listing: {response.getcode()} OK -> Found {len(videos)} videos')
+            if videos:
+                print(f'    First video: {videos[0].get("title")}')
     except Exception as e:
-        print(f'[3] Protected Route Failed: {e}')
+        print(f'[3] Video Listing Failed: {e}')
 else:
-    print('[3] Skipping Protected Route due to Login Failure.')
+    print('[3] Skipping Video test due to Login Failure.')

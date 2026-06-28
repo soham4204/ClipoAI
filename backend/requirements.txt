@@ -25,6 +25,11 @@ minio==7.2.0
 
 # Video utilities
 yt-dlp==2024.8.6
+faster-whisper==1.0.3
+ffmpeg-python==0.2.0
+
+# AI / LLM
+google-generativeai==0.7.2
 
 # Monitoring
 prometheus-fastapi-instrumentator==7.0.0
