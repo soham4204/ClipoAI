@@ -11,10 +11,13 @@ Creates and configures the FastAPI application with:
 from contextlib import asynccontextmanager
 
 import structlog
+import redis.asyncio as redis
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_limiter import FastAPILimiter
 from prometheus_fastapi_instrumentator import Instrumentator
 
+from app.api.auth import router as auth_router
 from app.api.health import router as health_router
 from app.config import settings
 
@@ -41,8 +44,15 @@ logger = structlog.get_logger()
 async def lifespan(application: FastAPI):
     """Handle application startup and shutdown lifecycle events."""
     logger.info("ClipoAI backend starting", env=settings.app_env)
+    
+    # Initialize Rate Limiter
+    redis_conn = redis.from_url(settings.redis_url, encoding="utf-8", decode_responses=True)
+    await FastAPILimiter.init(redis_conn)
+    
     yield
+    
     logger.info("ClipoAI backend shutting down")
+    await redis_conn.close()
 
 
 def create_app() -> FastAPI:
@@ -73,6 +83,7 @@ def create_app() -> FastAPI:
 
     # Routers
     application.include_router(health_router, prefix="/api")
+    application.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 
     return application
 

@@ -5,7 +5,11 @@ Configures async migrations with SQLAlchemy.
 """
 
 import asyncio
+import os
+import sys
 from logging.config import fileConfig
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from alembic import context
 from sqlalchemy import pool
@@ -16,7 +20,7 @@ from app.database import Base
 
 # Import all models so Alembic can detect them
 # These will be added as models are created in Sub-Phase 1B
-# from app.models import *  # noqa: F401, F403
+from app.models import *  # noqa: F401, F403
 
 config = context.config
 

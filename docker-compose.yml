@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-clipoai_dev_password}
       POSTGRES_DB: ${POSTGRES_DB:-clipoai}
     ports:
-      - "5432:5432"
+      - "15432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +23,7 @@ services:
     container_name: clipoai-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "16379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -37,8 +37,8 @@ services:
     container_name: clipoai-qdrant
     restart: unless-stopped
     ports:
-      - "6333:6333"
-      - "6334:6334"
+      - "16333:6333"
+      - "16334:6334"
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
@@ -56,8 +56,8 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-clipoai}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-clipoai_minio_password}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "19000:9000"
+      - "19001:9001"
     volumes:
       - minio_data:/data
     healthcheck:
@@ -76,7 +76,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8080:8080"
+      - "18080:8080"
     volumes:
       - ./backend:/app
     depends_on:
@@ -97,7 +97,7 @@ services:
     container_name: clipoai-frontend
     restart: unless-stopped
     ports:
-      - "5173:5173"
+      - "15173:5173"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -110,7 +110,7 @@ services:
     container_name: clipoai-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "18082:80"
     volumes:
       - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -123,7 +123,7 @@ services:
     container_name: clipoai-prometheus
     restart: unless-stopped
     ports:
-      - "9090:9090"
+      - "19090:9090"
     volumes:
       - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
@@ -136,7 +136,7 @@ services:
       GF_SECURITY_ADMIN_USER: ${GF_SECURITY_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD:-admin}
     ports:
-      - "3000:3000"
+      - "13000:3000"
     volumes:
       - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
       - grafana_data:/var/lib/grafana
@@ -149,7 +149,7 @@ services:
     container_name: clipoai-loki
     restart: unless-stopped
     ports:
-      - "3100:3100"
+      - "13100:3100"
     volumes:
       - ./infra/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
       - loki_data:/loki
