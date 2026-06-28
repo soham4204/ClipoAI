@@ -44,8 +44,8 @@
 
   /* Glow effect */
   .glow {
-    box-shadow: 0 0 20px rgba(92, 124, 250, 0.15),
-                0 0 60px rgba(92, 124, 250, 0.05);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.15),
+                0 0 60px rgba(239, 68, 68, 0.05);
   }
 
   /* Button base */
